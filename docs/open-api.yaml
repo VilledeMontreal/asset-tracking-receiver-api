@@ -1,0 +1,325 @@
+openapi: 3.0.0
+info:
+  version: 1.0.1
+  title: GPS asset tracking receiver API
+  description: Receives and validates the GPS data received
+  contact:
+    name: Martin Roy
+    email: martin.roy2@montreal.ca
+  license:
+    name: Copyright (C) Ville de Montréal
+
+servers:
+  - url: https://api.dev.interne.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
+    description: Development environment
+  - url: https://api.accept.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
+    description: Staging environment
+  - url: https://api.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
+    description: Production environment
+
+security:
+  - ApiKeyAuth: []
+
+paths:
+  /rest-geojson-in:
+    post:
+      parameters:
+        - $ref: "#/components/parameters/Content-Type"
+      requestBody:
+        description: A Collection of GPS Data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FeatureCollection"
+      responses:
+        202:
+          $ref: "#/components/responses/Accepted"
+        400:
+          $ref: "#/components/responses/InvalidRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        415:
+          $ref: "#/components/responses/UnsupportedMediaType"
+        422:
+          $ref: "#/components/responses/UnprocessableEntity"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: query
+      name: apikey
+
+  parameters:
+    Accept:
+      in: header
+      name: accept
+      description: the returned format
+      schema:
+        type: string
+        default: application/json
+        enum:
+          - application/json
+    Content-Type:
+      name: content-type
+      in: header
+      description: the input format
+      schema:
+        type: string
+        default: application/json
+        enum:
+          - application/json
+
+  responses:
+    Accepted:
+      description: GPS data is Accepted and will be process asynchonously by the system
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Accepted"
+    InvalidRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    Unauthorized:
+      description: Unauthorized, No API key found in request or Invalid authentication credentials
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    UnexpectedError:
+      description: Unexpected server error, try later
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    UnprocessableEntity:
+      description: Unprocessable Entity, The request body doesn't meet the specification
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    UnsupportedMediaType:
+      description: Unsupported Media Type, the request Content-type is not supported
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+  schemas:
+    Accepted:
+      required:
+        - accepted
+    Created:
+      required:
+        - created
+    FeatureCollection:
+      type: object
+      description: GeoJSon Feature collection
+      required:
+        - type
+        - features
+      externalDocs:
+        url: "https://tools.ietf.org/html/rfc7946#section-3.3"
+      properties:
+        type:
+          type: string
+          enum:
+            - FeatureCollection
+        features:
+          type: array
+          items:
+            $ref: "#/components/schemas/Feature"
+    Feature:
+      type: object
+      description: GeoJSon Feature
+      required:
+        - type
+        - properties
+        - geometry
+      properties:
+        type:
+          type: string
+          enum:
+            - Feature
+        properties:
+          $ref: "#/components/schemas/GPSData"
+        geometry:
+          $ref: "#/components/schemas/Geometry"
+    Geometry:
+      type: object
+      description: GeoJSon geometry
+      externalDocs:
+        url: http://geojson.org/geojson-spec.html#geometry-objects
+      properties:
+        type:
+          $ref: "#/components/schemas/GeometryType"
+        coordinates:
+          oneOf:
+            - $ref: "#/components/schemas/Point"
+      required:
+        - type
+        - coordinates
+      discriminator:
+        propertyName: type
+    GeometryType:
+      type: string
+      description: The type of the feature's geometry
+      enum:
+        - Point
+    GPSData:
+      required:
+        - modemId
+        - gpsTime
+        - speed
+        - direction
+      properties:
+        modemId:
+          type: string
+        speed:
+          type: integer
+          minimum: 0
+        direction:
+          type: integer
+          minimum: 0
+          maximum: 360
+        nbrOfSatellites:
+          type: integer
+          nullable: true
+        altitude:
+          type: integer
+          minimum: 0
+          nullable: true
+        valid:
+          type: boolean
+          nullable: true
+        gpsTime:
+          type: string
+          format: date-time
+        swipeCardId:
+          type: string
+          nullable: true
+        ip:
+          type: string
+          nullable: true
+        sensor1:
+          type: string
+          nullable: true
+        sensor1Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor2:
+          type: string
+          nullable: true
+        sensor2Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor3:
+          type: string
+          nullable: true
+        sensor3Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor4:
+          type: string
+          nullable: true
+        sensor4Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor5:
+          type: string
+          nullable: true
+        sensor5Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor6:
+          type: string
+          nullable: true
+        sensor6Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor7:
+          type: string
+          nullable: true
+        sensor7Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        sensor8:
+          type: string
+          nullable: true
+        sensor8Timestamp:
+          type: string
+          format: date-time
+          nullable: true
+        src:
+          type: string
+          enum:
+            - Tallysman
+            - Sierra Wireless
+          nullable: true
+        IOCurrent:
+          type: string
+          example: "Input2High, Input3Low"
+          nullable: true
+        running:
+          type: integer
+          nullable: true
+        idle:
+          type: integer
+          nullable: true
+    Point:
+      $ref: "#/components/schemas/Point2D"
+    Point2D:
+      type: array
+      description: Point in 2D space
+      maxItems: 2
+      minItems: 2
+      items:
+        type: number
+      example:
+        - -73.5736270, 45.5614712
+    ApiError:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        target:
+          type: string
+        details:
+          type: array
+          items:
+            $ref: "#/components/schemas/ApiError"
+        innererror:
+          $ref: "#/components/schemas/ApiInnerError"
+    ApiInnerError:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        innererror:
+          $ref: "#/components/schemas/ApiInnerError"
+      additionalProperties:
+        type: string
+    ErrorResponse:
+      required:
+        - error
+      properties:
+        error:
+          $ref: "#/components/schemas/ApiError"
