@@ -10,12 +10,10 @@ info:
     name: Copyright (C) Ville de Montréal
 
 servers:
-  - url: https://api.dev.interne.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
-    description: Development environment
-  - url: https://api.accept.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
-    description: Staging environment
   - url: https://api.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
     description: Production environment
+  - url: https://api.accept.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
+    description: Staging environment
 
 security:
   - ApiKeyAuth: []
