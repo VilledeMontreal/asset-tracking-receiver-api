@@ -2,22 +2,11 @@
 
 <a id='english-version' class='anchor' aria-hidden='true'/>
 
-# Template for open source code repositories of the Ville de Montréal
+# asset-tracking-receiver-api
 
-## Template for README.md
+The Gogeo system is an appliccation to follow the completion of operation and a fleet-tracker.
 
-- Project description
-
-### Details
-
-- How does it work?
-- Who will use this project?
-
-### Build
-
-### Installation
-
-### Testing
+For more information, consult [the documentation](https://villedemontreal.github.io/asset-tracking-receiver-api/).
 
 ### License
 
@@ -31,30 +20,17 @@ See [CONTRIBUTING.md](CONTRIBUTING.md#english-version).
 
 Participation in this poject is governed by the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-______________________
+---
 
 ([English](#english-version))
 
 <a id='french-version' class='anchor' aria-hidden='true'/>
 
-# Gabarit pour dépôts de code source libre de la Ville de Montréal
+# asset-tracking-receiver-api
 
-## Gabarit pour README.md
+Le système Gogéo permet de faire le suivi des opérations et des véhicules sur l'ile de Montréal.
 
-Description du projet
-
-### Détails
-
-- Comment fonctionne le produit?
-- À qui s'adresse le produit?
-
-### Bâtir
-
-### Installer
-
-### Tester
-
-### Contribuer
+Pour en savoir plus, consulter [la documentation](https://villedemontreal.github.io/asset-tracking-receiver-api/).
 
 Voir [CONTRIBUTING.md](CONTRIBUTING.md#french-version)
 
@@ -64,4 +40,4 @@ Le code source de ce projet est libéré sous la licence [MIT License](LICENSE).
 
 ### Code de Conduite
 
-La participation à ce projet est réglementée part le [Code de Conduite](CODE_OF_CONDUCT.md#french-version)
+La participation à ce projet est réglementée part le [Code de Conduite](CODE_OF_CONDUCT.md#french-version).
