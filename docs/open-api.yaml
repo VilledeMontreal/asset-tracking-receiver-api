@@ -108,11 +108,9 @@ components:
             $ref: "#/components/schemas/ErrorResponse"
   schemas:
     Accepted:
-      required:
-        - accepted
-    Created:
-      required:
-        - created
+      properties:
+        accepted:
+          type: array
     FeatureCollection:
       type: object
       description: GeoJSon Feature collection
@@ -176,13 +174,16 @@ components:
       properties:
         modemId:
           type: string
+          description: "The GPS unique identifier"
         speed:
           type: integer
           minimum: 0
+          description: "Speed in km/h"
         direction:
           type: integer
           minimum: 0
           maximum: 360
+          description: "Direction, heading in degrees"
         nbrOfSatellites:
           type: integer
           nullable: true
@@ -190,15 +191,10 @@ components:
           type: integer
           minimum: 0
           nullable: true
-        valid:
-          type: boolean
-          nullable: true
         gpsTime:
           type: string
           format: date-time
-        swipeCardId:
-          type: string
-          nullable: true
+          description: "Time in UTC(Z) format"
         ip:
           type: string
           nullable: true
@@ -263,10 +259,12 @@ components:
           enum:
             - Tallysman
             - Sierra Wireless
+          description: "For internal use only"
           nullable: true
         IOCurrent:
           type: string
           example: "Input2High, Input3Low"
+          description: "Reserved for Tallysman GPS only"
           nullable: true
         running:
           type: integer
