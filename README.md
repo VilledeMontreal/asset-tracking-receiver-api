@@ -2,7 +2,7 @@
 
 <a id='english-version' class='anchor' aria-hidden='true'/>
 
-# asset-tracking-receiver-api.
+# asset-tracking-receiver-api
 
 The Gogeo system is an appliccation to follow the completion of operation and a fleet-tracker.
 

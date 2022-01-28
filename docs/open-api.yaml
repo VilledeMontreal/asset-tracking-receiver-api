@@ -24,7 +24,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/Content-Type"
       requestBody:
-        description: A Collection of GPS Data
+        description: A Collection of GPS Data of max 1000
         required: true
         content:
           application/json:
@@ -175,6 +175,7 @@ components:
         modemId:
           type: string
           description: "The GPS unique identifier"
+          maxLength: 100
         speed:
           type: integer
           minimum: 0
@@ -187,6 +188,7 @@ components:
         nbrOfSatellites:
           type: integer
           nullable: true
+          minimum: 0
         altitude:
           type: integer
           minimum: 0
@@ -198,9 +200,12 @@ components:
         ip:
           type: string
           nullable: true
+          maxLength: 100
         sensor1:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor1Timestamp:
           type: string
           format: date-time
@@ -208,6 +213,8 @@ components:
         sensor2:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor2Timestamp:
           type: string
           format: date-time
@@ -215,6 +222,8 @@ components:
         sensor3:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor3Timestamp:
           type: string
           format: date-time
@@ -222,6 +231,8 @@ components:
         sensor4:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor4Timestamp:
           type: string
           format: date-time
@@ -229,6 +240,8 @@ components:
         sensor5:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor5Timestamp:
           type: string
           format: date-time
@@ -236,6 +249,8 @@ components:
         sensor6:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor6Timestamp:
           type: string
           format: date-time
@@ -243,6 +258,8 @@ components:
         sensor7:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor7Timestamp:
           type: string
           format: date-time
@@ -250,6 +267,8 @@ components:
         sensor8:
           type: string
           nullable: true
+          maxLength: 1
+          description: "0 or 1"
         sensor8Timestamp:
           type: string
           format: date-time
