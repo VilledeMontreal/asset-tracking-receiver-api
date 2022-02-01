@@ -24,7 +24,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/Content-Type"
       requestBody:
-        description: A Collection of GPS Data of max 1000
+        description: A Collection of GPS Data containing a max of 1000 items/features
         required: true
         content:
           application/json:
@@ -204,8 +204,7 @@ components:
         sensor1:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor1Timestamp:
           type: string
           format: date-time
@@ -213,8 +212,7 @@ components:
         sensor2:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor2Timestamp:
           type: string
           format: date-time
@@ -222,8 +220,7 @@ components:
         sensor3:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor3Timestamp:
           type: string
           format: date-time
@@ -231,8 +228,7 @@ components:
         sensor4:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor4Timestamp:
           type: string
           format: date-time
@@ -240,8 +236,7 @@ components:
         sensor5:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor5Timestamp:
           type: string
           format: date-time
@@ -249,8 +244,7 @@ components:
         sensor6:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor6Timestamp:
           type: string
           format: date-time
@@ -258,8 +252,7 @@ components:
         sensor7:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor7Timestamp:
           type: string
           format: date-time
@@ -267,8 +260,7 @@ components:
         sensor8:
           type: string
           nullable: true
-          maxLength: 1
-          description: "0 or 1"
+          description: "0 for inactive, 1 for active"
         sensor8Timestamp:
           type: string
           format: date-time
