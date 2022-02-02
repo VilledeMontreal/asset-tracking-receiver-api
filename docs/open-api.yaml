@@ -21,13 +21,11 @@ security:
 paths:
   /rest-geojson-in:
     post:
-      parameters:
-        - $ref: "#/components/parameters/Content-Type"
       requestBody:
         description: A Collection of GPS Data containing a max of 1000 items/features
         required: true
         content:
-          application/json:
+          application/geo+json:
             schema:
               $ref: "#/components/schemas/FeatureCollection"
       responses:
@@ -65,9 +63,10 @@ components:
       description: the input format
       schema:
         type: string
-        default: application/json
+        default: application/geo+json
         enum:
           - application/json
+          - application/geo+json
 
   responses:
     Accepted:
