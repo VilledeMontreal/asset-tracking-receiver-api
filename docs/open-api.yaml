@@ -292,7 +292,7 @@ components:
       items:
         type: number
       example:
-        - -73.5736270, 45.5614712
+        [-73.5736270, 45.5614712]
     ApiError:
       required:
         - code
