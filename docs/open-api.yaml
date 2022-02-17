@@ -173,7 +173,7 @@ components:
       properties:
         modemId:
           type: string
-          description: "The GPS unique identifier"
+          description: "The GPS unique identifier (ESN or IMEI). If not available contact us."
           maxLength: 100
         speed:
           type: integer
