@@ -266,9 +266,6 @@ components:
           nullable: true
         src:
           type: string
-          enum:
-            - Tallysman
-            - Sierra Wireless
           description: "For internal use only"
           nullable: true
         IOCurrent:
