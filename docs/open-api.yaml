@@ -264,21 +264,6 @@ components:
           type: string
           format: date-time
           nullable: true
-        src:
-          type: string
-          description: "For internal use only"
-          nullable: true
-        IOCurrent:
-          type: string
-          example: "Input2High, Input3Low"
-          description: "Reserved for Tallysman GPS only"
-          nullable: true
-        running:
-          type: integer
-          nullable: true
-        idle:
-          type: integer
-          nullable: true
     Point:
       $ref: "#/components/schemas/Point2D"
     Point2D:
