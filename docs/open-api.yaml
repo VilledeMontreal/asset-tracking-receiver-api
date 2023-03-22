@@ -4,8 +4,8 @@ info:
   title: GPS asset tracking receiver API
   description: Receives and validates the GPS data received
   contact:
-    name: Martin Roy
-    email: martin.roy2@montreal.ca
+    name: Simon Loury
+    email: simon.loury@montreal.ca
   license:
     name: Copyright (C) Ville de Montréal
 
