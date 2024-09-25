@@ -1,13 +1,10 @@
 openapi: 3.0.0
 info:
-  version: 1.0.1
+  version: 1.2.0
   title: GPS asset tracking receiver API
   description: Receives and validates the GPS data received
-  contact:
-    name: Simon Loury
-    email: simon.loury@montreal.ca
   license:
-    name: Copyright (C) Ville de Montréal
+    name: Copyright (C) Ville de Montreal
 
 servers:
   - url: https://api.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
@@ -22,7 +19,7 @@ paths:
   /rest-geojson-in:
     post:
       requestBody:
-        description: A Collection of GPS Data containing a max of 1000 items/features
+        description: A Collection of GPS Data
         required: true
         content:
           application/geo+json:
@@ -39,7 +36,37 @@ paths:
           $ref: "#/components/responses/UnsupportedMediaType"
         422:
           $ref: "#/components/responses/UnprocessableEntity"
-
+  /compliance-reports:
+    get:
+      operationId: getComplianceReport
+      responses:
+        200:
+          description: Ok
+          content:
+            text/html:
+              schema:
+                $ref: '#/components/schemas/HtmlResponse'
+        400:
+          $ref: "#/components/responses/InvalidRequest"
+        401:
+          $ref: "#/components/responses/Unauthorized"
+        415:
+          $ref: "#/components/responses/UnsupportedMediaType"
+        422:
+          $ref: "#/components/responses/UnprocessableEntity"
+        default:
+          description: Unprocessable Entity, The request body doesn't meet the specification
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+      parameters:
+        - in: query
+          name: operatorIntegrationId
+          description: For external operators, use the NEQ as operatorIntegrationId. Moreover, if you receive a copy of a compliance report, the operatorIntegrationId is provided at the beginning of the report. Your can use this operatorIntegrationId to download the latest version of the compliance report for this operator with this route.
+          required: true
+          schema:
+            type: string
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -106,6 +133,9 @@ components:
           schema:
             $ref: "#/components/schemas/ErrorResponse"
   schemas:
+    HtmlResponse:
+      type: string
+      example: '<html>HTML content</html>'
     Accepted:
       properties:
         accepted:
@@ -164,105 +194,172 @@ components:
       description: The type of the feature's geometry
       enum:
         - Point
+    Tracking:
+      type: object
+      description: A value must be provided to identify which vehicle is related to the current Feature. Either provide vin+licencePlate or modemId (mutually exclusive). The option to provide the trackingId is obsolete, but still supported.
+      oneOf:
+        - properties:
+            vin:
+              type: string
+              description: "The vehicle identification number. In upper case without spaces if possible, but lower case and spaces are also accepted."
+              example: "1HGBH41JXMN109186"
+              maxLength: 100
+            licencePlate:
+              type: string
+              description: "The licence plate. In upper case without spaces if possible, but lower case and spaces are also accepted."
+              example: "ABC999"
+              maxLength: 100
+          required: [vin,licencePlate]
+        - properties:
+            modemId:
+              type: string
+              description: "The GPS unique identifier (ESN or IMEI). In upper case without spaces if possible, but lower case and spaces are also accepted."
+              example: "492851526208005"
+              maxLength: 100
+          required: [modemId]
+        - properties:
+            trackingId:
+              type: string
+              description: "Can be a VIN, a licence plate or a modemId. This attribute is deprecated, please use the explicit attributes vin+licencePlate or modemId instead."
+              example: "1HGBH41JXMN109186"
+              deprecated: true
+              maxLength: 100
+          required: [trackingId]
     GPSData:
+      description: Each vehicle must be identified by providing both its VIN and licencePlate. Vehicle identification by modemId is supported, but is not recommended. 
       required:
-        - modemId
         - gpsTime
         - speed
         - direction
+      allOf:
+        - $ref: "#/components/schemas/Tracking"
       properties:
-        modemId:
+        gpsTime:
           type: string
-          description: "The GPS unique identifier (ESN or IMEI). If not available contact us."
-          maxLength: 100
+          format: date-time
+          description: "Time of measurement in UTC(Z) format. For example, if the GPS position was mesured at 13:00:17 and the position was sent to city of Montreal at 13:00:20, gpsTime must be 13:00:17."
+          example: "2017-09-26T17:20:30.000Z"
         speed:
           type: integer
           minimum: 0
-          description: "Speed in km/h"
+          maximum: 300
+          description: "Speed in km/h."
         direction:
           type: integer
           minimum: 0
           maximum: 360
-          description: "Direction, heading in degrees"
+          description: "Direction, heading in degrees."
+        altitude:
+          type: integer
+          minimum: 0
+          maximum: 2000
+          nullable: true
+          description: "Altitude in meters."
         nbrOfSatellites:
           type: integer
           nullable: true
           minimum: 0
-        altitude:
-          type: integer
-          minimum: 0
-          nullable: true
-        gpsTime:
-          type: string
-          format: date-time
-          description: "Time in UTC(Z) format"
+          deprecated: true
+          description: "Not used as of now. Number of satellites."
         ip:
           type: string
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
           maxLength: 100
         sensor1:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor1Timestamp:
           type: string
           format: date-time
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
         sensor2:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor2Timestamp:
           type: string
           format: date-time
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
         sensor3:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor3Timestamp:
           type: string
           format: date-time
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
         sensor4:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor4Timestamp:
           type: string
           format: date-time
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
         sensor5:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor5Timestamp:
           type: string
           format: date-time
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
         sensor6:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor6Timestamp:
           type: string
           format: date-time
           nullable: true
+          deprecated: true
+          description: "Not used as of now."
         sensor7:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor7Timestamp:
           type: string
           format: date-time
+          deprecated: true
+          description: "Not used as of now."
           nullable: true
         sensor8:
           type: string
           nullable: true
-          description: "0 for inactive, 1 for active"
+          deprecated: true
+          description: "Not used as of now. 0 for inactive, 1 for active"
         sensor8Timestamp:
           type: string
           format: date-time
+          deprecated: true
+          description: "Not used as of now."
+          nullable: true
+        operatorIntegrationId:
+          type: string
+          description: "The NEQ (Quebec enterprise number) of the enterprise of the vehicle operator must be specified as operatorIntegrationId. This allows you to download the full compliance report even if the City of Montreal has not yet carried out the configurations for the vehicules of this operator. This attribute is optional to avoid breaking changes, but mandatory for new integrations."
+          example: 1169326288
+          maxLength: 100
           nullable: true
     Point:
       $ref: "#/components/schemas/Point2D"
