@@ -216,6 +216,7 @@ components:
               description: "The GPS unique identifier (ESN or IMEI). In upper case without spaces if possible, but lower case and spaces are also accepted."
               example: "492851526208005"
               maxLength: 100
+              deprecated: true
           required: [modemId]
         - properties:
             trackingId:
