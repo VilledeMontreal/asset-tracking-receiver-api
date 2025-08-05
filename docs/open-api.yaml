@@ -221,7 +221,7 @@ components:
         - properties:
             trackingId:
               type: string
-              description: "Can be a VIN, a licence plate or a modemId. This attribute is deprecated, please use the explicit attributes vin+licencePlate or modemId instead."
+              description: "!!! Breaking change planned for 2025-10-09: trackingId will stop being supported !!! Can be a VIN, a licence plate or a modemId. This attribute is deprecated, please use the explicit attributes vin+licencePlate or modemId instead."
               example: "1HGBH41JXMN109186"
               deprecated: true
               maxLength: 100
@@ -358,7 +358,7 @@ components:
           nullable: true
         operatorIntegrationId:
           type: string
-          description: "The NEQ (Quebec enterprise number) of the enterprise of the vehicle operator must be specified as operatorIntegrationId. This allows you to download the full compliance report even if the City of Montreal has not yet carried out the configurations for the vehicules of this operator. This attribute is optional to avoid breaking changes, but mandatory for new integrations."
+          description: "!!! Breaking change planned for 2025-10-09: operatorIntegrationId will become required and not nullable !!! The NEQ (Quebec enterprise number) of the enterprise of the vehicle operator must be specified as operatorIntegrationId. This allows you to download the full compliance report even if the City of Montreal has not yet carried out the configurations for the vehicules of this operator. This attribute is optional to avoid breaking changes, but mandatory for new integrations."
           example: 1169326288
           maxLength: 100
           nullable: true
