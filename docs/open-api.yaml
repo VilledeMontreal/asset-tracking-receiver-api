@@ -1,11 +1,15 @@
 openapi: 3.0.0
 info:
   version: 1.2.0
-  title: GPS asset tracking receiver API
-  description: Receives and validates the GPS data received
+  title: GPS asset tracking receiver API  
+  description: | 
+    Receives and validates the GPS data received
+
+    **!!! Breaking changes - 2025-10-09 !!!**
+      - The attribute operatorIntegrationId becomes required and not nullable
+      - The attribute trackingId is not supported anymore
   license:
     name: Copyright (C) Ville de Montreal
-
 servers:
   - url: https://api.montreal.ca/api/it-platforms/geomatic/geo-events/receiver
     description: Production environment
@@ -218,20 +222,13 @@ components:
               maxLength: 100
               deprecated: true
           required: [modemId]
-        - properties:
-            trackingId:
-              type: string
-              description: "!!! Breaking change planned for 2025-10-09: trackingId will stop being supported !!! Can be a VIN, a licence plate or a modemId. This attribute is deprecated, please use the explicit attributes vin+licencePlate or modemId instead."
-              example: "1HGBH41JXMN109186"
-              deprecated: true
-              maxLength: 100
-          required: [trackingId]
     GPSData:
       description: Each vehicle must be identified by providing both its VIN and licencePlate. Vehicle identification by modemId is supported, but is not recommended. 
       required:
         - gpsTime
         - speed
         - direction
+        - operatorIntegrationId
       allOf:
         - $ref: "#/components/schemas/Tracking"
       properties:
@@ -358,10 +355,10 @@ components:
           nullable: true
         operatorIntegrationId:
           type: string
-          description: "!!! Breaking change planned for 2025-10-09: operatorIntegrationId will become required and not nullable !!! The NEQ (Quebec enterprise number) of the enterprise of the vehicle operator must be specified as operatorIntegrationId. This allows you to download the full compliance report even if the City of Montreal has not yet carried out the configurations for the vehicules of this operator. This attribute is optional to avoid breaking changes, but mandatory for new integrations."
+          description: "The NEQ (Quebec enterprise number) of the enterprise of the vehicle operator must be specified as operatorIntegrationId. This allows you to download the full compliance report even if the City of Montreal has not yet carried out the configurations for the vehicules of this operator."
           example: 1169326288
           maxLength: 100
-          nullable: true
+          nullable: false
     Point:
       $ref: "#/components/schemas/Point2D"
     Point2D:
